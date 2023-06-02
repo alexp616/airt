@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:airt/utils/auth.dart';
 
 class CustomButton extends StatelessWidget {
   final void Function() onPressed;

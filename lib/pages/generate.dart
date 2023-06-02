@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:textfield_tags/textfield_tags.dart';
-import 'package:airt/pages/style.dart';
 import 'package:airt/widgets/selectable_grid.dart';
 import 'package:airt/widgets/custom_text_field.dart';
 import 'package:airt/widgets/app_bar.dart';
 import 'package:airt/utils/image.dart';
 import 'package:airt/utils/request.dart';
+import 'package:airt/utils/data.dart';
+import 'package:airt/utils/storage.dart';
 import 'dart:ui';
+import 'dart:math';
 
 class GeneratePage extends StatefulWidget {
-  const GeneratePage({super.key});
+  final Storage storage;
+  
+  const GeneratePage({
+    super.key,
+    required this.storage
+  });
 
   @override
   GeneratePageState createState() => GeneratePageState();
 }
 
 class GeneratePageState extends State<GeneratePage> {
-  final selectableGrid = SelectableGrid(images: images);
   final controller = TextfieldTagsController();
+  late final SelectableGrid selectableGrid;
   bool isLoading = false;
 
-  static late final List<ImageData> images = [
-    ImageData.direct(Image.asset('art/one.png')),
-    ImageData.direct(Image.asset('art/two.png')),
-    ImageData.direct(Image.asset('art/three.png')),
-    ImageData.direct(Image.asset('art/four.png')),
+  static final List<ImageData> images = [
+    DefaultImages.one.toImage(),
+    DefaultImages.two.toImage(),
+    DefaultImages.three.toImage(),
+    DefaultImages.four.toImage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectableGrid = SelectableGrid(images: images, storage: widget.storage);
+  }
 
   @override
   void dispose() {
@@ -41,17 +54,12 @@ class GeneratePageState extends State<GeneratePage> {
     try {
       final client = RequestClient('https://airt.ngrok.app/');
       final data = await client.generateImages(tags.join(', '));
+      selectableGrid.updateImages([for (var image in data) ImageData(image)]);
+    } catch (e) {}
 
-      setState(() {
-        selectableGrid.images = [for (var image in data) ImageData(image)];
-
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -75,57 +83,48 @@ class GeneratePageState extends State<GeneratePage> {
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: CustomAppBar(
-              // width: min(MediaQuery.of(context).size.width, 750),
-              // color: Theme.of(context).colorScheme.background,
-              context: context),
+          appBar: CustomAppBar(context: context),
           body: Padding(
             padding: const EdgeInsets.only(
               top: 25.0,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: controller,
-                    submit: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              10.0), // Set the border radius
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      controller: controller,
+                      submit: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          disabledBackgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
-                        // textStyle: Theme.of(context).textTheme.headlineSmall,
+                        onPressed: isLoading ? null :
+                          () => generateImages(controller.getTags!),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            isLoading ? 'Loading...' : 'Generate',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
                       ),
-                      onPressed: isLoading ? null : () => generateImages(controller.getTags!),
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                'Generate',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 0.4 * MediaQuery.of(context).size.height,
-                    child: selectableGrid,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StylePage(
-                                content: selectableGrid.selectedImage)),
-                      );
-                    },
-                    child: const Text('continue'),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 19,
+                    ),
+                    SizedBox(
+                      height:
+                          min(0.80 * MediaQuery.of(context).size.width, 650),
+                      width: min(0.80 * MediaQuery.of(context).size.width, 650),
+                      child: selectableGrid,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

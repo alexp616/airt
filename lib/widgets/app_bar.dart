@@ -56,11 +56,14 @@ class CustomAppBar extends AppBar {
                 ),
               ],
             ),
-            const Icon(
-              IconData(
-                0xf053e,
-                fontFamily: 'MaterialIcons'
+            IconButton(
+              icon: const Icon(
+                IconData(
+                  0xf053e,
+                  fontFamily: 'MaterialIcons'
+                ),
               ),
+              onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
             ),
           ],
         ),

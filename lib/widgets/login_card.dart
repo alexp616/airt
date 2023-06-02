@@ -153,7 +153,7 @@ class LoginCardState extends State<LoginCard> {
                         onPressed: () async {
                           if (snapshot.data!.auth.currentUser == null) {
                             await snapshot.data!.signInWithGoogle();
-                            await snapshot.data!.storage.updateImages();
+                            await snapshot.data!.storage.update();
                             setState(() { });
                           }
 
@@ -161,7 +161,10 @@ class LoginCardState extends State<LoginCard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => StylePage(content: image),
+                              builder: (_) => StylePage(
+                                content: image,
+                                storage: snapshot.data!.storage
+                              ),
                             ),
                           );
                         },
@@ -173,14 +176,16 @@ class LoginCardState extends State<LoginCard> {
                         onPressed: () async {
                           if (snapshot.data!.auth.currentUser == null) {
                             await snapshot.data!.signInWithGoogle();
-                            await snapshot.data!.storage.updateImages();
+                            await snapshot.data!.storage.update();
                             setState(() { });
                           }
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => GeneratePage(),
+                              builder: (_) => GeneratePage(
+                                storage: snapshot.data!.storage
+                              ),
                             ),
                           );
                         },
@@ -190,7 +195,9 @@ class LoginCardState extends State<LoginCard> {
                       ),
                       ImageCarousel(
                         images: snapshot.data!.storage.images,
-                        height: 0.2 * MediaQuery.of(context).size.height
+                        height: 0.2 * MediaQuery.of(context).size.height,
+                        autoPlay: true,
+                        focus: true,
                       ),
                     ],
                   ),

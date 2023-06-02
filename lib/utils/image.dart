@@ -8,8 +8,19 @@ class ImageData {
   ImageData(Uint8List bytes) : 
     this.display = Image.memory(bytes),
     this.bytes = bytes;
-  
+
   ImageData.direct(Image display) :
     this.display = display,
-    this.bytes = Uint8List(0);  
+    this.bytes = Uint8List(0);
+  
+  Widget withSize({
+    required double height, 
+    required double width
+  }) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: display,
+    );
+  }
 }

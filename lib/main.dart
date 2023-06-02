@@ -8,6 +8,9 @@ class AIrt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
+    imageCache.clear();
+
     return MaterialApp(
       title: 'AIrt',
       theme: ThemeData(
@@ -16,7 +19,6 @@ class AIrt extends StatelessWidget {
           primary: Color.fromARGB(255, 252, 250, 238),
           secondary: Color.fromARGB(255, 130, 182, 182),
           background: Color.fromARGB(255, 31, 32, 36),
-          tertiary: Color.fromARGB(255, 253, 138, 138)
         ),
         textTheme: const TextTheme().apply(
           fontFamily: 'Poppins',

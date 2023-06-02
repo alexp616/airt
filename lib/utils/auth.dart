@@ -53,7 +53,9 @@ class Authentication {
     if (!snapshot.exists) {
       await FirebaseFirestore.instance.collection('users')
         .doc(credential.user!.uid)
-        .set({ 'generatedImages': [] });
+        .set({ 'generatedImages': [],
+               'savedStyles': [] 
+        });
     }
 
     return credential.user;
