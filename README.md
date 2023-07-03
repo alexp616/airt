@@ -1,16 +1,9 @@
-# airt
+# AIrt
 
-A new Flutter project.
+An image generation and image style transfer app written in Flutter. Backend queries [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) and [Arbitrary Image Stylization](https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2) from Google Colab. This code base may or may not compile, and it will likely remain a very rough prototype.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Showcase
+![Login page](https://github.com/Wolfiej-k/airt/blob/main/showcase/showcase_1.png)
+![Style page](https://github.com/Wolfiej-k/airt/blob/main/showcase/showcase_2.png)
+![Generate page](https://github.com/Wolfiej-k/airt/blob/main/showcase/showcase_3.png)
+![Image example](https://github.com/Wolfiej-k/airt/blob/main/showcase/showcase_4.png)
