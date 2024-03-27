@@ -1,3 +1,5 @@
+This is a clone of https://github.com/Wolfiej-k/airt
+
 # AIrt
 
 An image generation and image style transfer app written in Flutter. Backend queries [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) and [Arbitrary Image Stylization](https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2) from Google Colab. This code may not compile, and it will likely remain a very rough prototype.
